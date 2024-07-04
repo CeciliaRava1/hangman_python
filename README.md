@@ -19,7 +19,7 @@ This is a simple implementation of the classic Hangman game in Python. The playe
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/hangman-game.git
+    git clone https://github.com/CeciliaRava1/hangman-game.git
     cd hangman-game
     ```
 2. Run the game:
