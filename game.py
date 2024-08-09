@@ -1,101 +1,100 @@
-#variables
 import secrets
 import random
 import math
-word_letters = []
+
+
+optionWordsToGuess = ['cat', 'dog', 'rabbit', 'wolf', 'horse', 'cow', 'elephant', 'bird', 'fox', 'tiger', 'lion', 'giraffe', 'zebra', 'panda', 'koala', 'cheetah', 'rhinoceros', 'hippopotamus', 'kangaroo', 'alligator']
+wordToGuess = secrets.choice(optionWordsToGuess)
+wordToGuessLetters = list(wordToGuess)
+wordToGuessUniqueLetters = set(wordToGuessLetters)
+
+
 alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-position_letter = [0]* len(alphabet)
-list = ['cat', 'dog', 'rabbit', 'wolf', 'horse', 'cow', 'elephant', 'bird', 'fox']
-word = secrets.choice(list)
-word_game = ''
-word_lenght = len(word)
-position_word = []
-reached = 0
-position = 0
-counter = 0
-attemps = 3
-jupiter = []
+letterPositionInAlphabet = []
 
-#Discover letters of the word without repetition
-times = 0
-number = 0
-caracter = word[0]
-word_letters.append(word[0])
-for i in range (0, len(word)-1):
-    number += 1
-    if caracter != word[number]:
-        word_letters.append(word[number])
+for letter in wordToGuess:
 
-#Vector with letters of the word
-for i in word:
-    jupiter.append(i)
+    actualPosition = 0
+    letterPositionInAlphabetReached = False
 
-#Position numbers of words in the alphabet
-for i in word:
-    reached = 0
-    position = 0
-    while reached != 1:
-        if alphabet[position] == i:
-            reached = 1
-            position_word.append(position)
+    while not letterPositionInAlphabetReached:
+        if alphabet[actualPosition] == letter:
+            letterPositionInAlphabetReached = True
+            letterPositionInAlphabet.append(actualPosition)
         else:
-            position += 1
+            actualPosition += 1
 
-#Hide letters
-hidden = 0
-coso = ''
-position = 0
-print(word)
-hide_percent = math.floor(word_lenght * (60/100))
-while hidden < hide_percent:
-    for i in range (0, len(word)):
-        random_number = random.randint(0,1)
-        if random_number == 1:
-            hidden +=1
-            word_game += ' _ '
-        else:
-            reached = 0
-            position = 0
-            word_game += jupiter[i]
-            while reached != 1:
-                if alphabet[position] == jupiter[i]:
-                    reached = 1
-                    position_letter[position] = 1
-                position += 1
 
-#Input word or letter
-while attemps > 0:
-    palabra = ''
-    #Print new word
-    for i in range (0, len(position_word)):
-        if position_letter[position_word[i]] == 1:
-            palabra += alphabet[position_word[i]] + ' '
+wordToGuessAmountOfLettersHidden = 0
+actualPosition = 0
+wordToGuessGame = ''
+wordToGuessHiddenLettersPercent = math.floor(len(wordToGuess) * (60/100))
+letterPositionInAlphabetReached = False
+gameLetterAddedFromAlphabet = [0]* len(alphabet)
+
+while wordToGuessAmountOfLettersHidden < wordToGuessHiddenLettersPercent:
+    for letter in range (0, len(wordToGuess)):
+
+        hideAPosition = random.randint(0,1)
+        
+        if hideAPosition == 1:
+            wordToGuessAmountOfLettersHidden +=1
+            wordToGuessGame += ' _ '
         else:
-            palabra += '_ '
+            actualPosition = 0
+            wordToGuessGame += wordToGuessLetters[letter]
+            while not letterPositionInAlphabetReached:
+                if alphabet[actualPosition] == wordToGuessLetters[letter]:
+                    letterPositionInAlphabetReached = True
+                    gameLetterAddedFromAlphabet[actualPosition] = 1
+                actualPosition += 1
+
+
+amountOfAttempts = 10
+wordGuessed = False
+
+while amountOfAttempts >= 0:
+
+    wordToGuessGame = ''
+
+    for letterPosition in range (0, len(letterPositionInAlphabet)):
+        if gameLetterAddedFromAlphabet[letterPositionInAlphabet[letterPosition]] == 1:
+            wordToGuessGame += alphabet[letterPositionInAlphabet[letterPosition]] + ' '
+        else:
+            wordToGuessGame += '_ '
             
-    if '_' not in palabra:
-        print('you won')
+    if '_' not in wordToGuessGame:
+        print(f"You won the game! The word was '{wordToGuess}'")
+        wordGuessed = True
         break
     else:
-        letter = input(f'Write a letter or a word for {palabra}. Attemps: {attemps}')
-        attemps -= 1
-        if word_lenght > 1:
-            if letter == word:
-              print('You won the game')
+        letterOrWord = input(f'Write a letter or a word for {wordToGuessGame}. Attemps: {amountOfAttempts}')
+        amountOfAttempts -= 1
+        if len(letterOrWord) > 1:
+            if letterOrWord == wordToGuess:
+                print(f"You won the game! The word was '{wordToGuess}'")
+                wordGuessed = True
+                break
+            else:
+                print("You don't guess the word")
 
+        else:
     #Replace 0 to 1 in the letter
-        counter = 0
-        position = 0
-        reached = 0
-        while counter != word_lenght:
-            counter += 1
-            while reached != 1:
-                for i in alphabet:
-                    if letter == i:
-                        reached = 1
-                        break
-                    position += 1
-        position_letter[position] = 1
-if attemps == 0:
-    print("there's no more attemps")
+            amountOfLettersAdded = 0
+            actualPosition = 0
+            letterPositionInAlphabetReached = False
+
+            while amountOfLettersAdded != len(wordToGuess):
+                amountOfLettersAdded += 1
+                while not letterPositionInAlphabetReached:
+                    for letter in alphabet:
+                        if letterOrWord == letter:
+                            letterPositionInAlphabetReached = True
+                            break
+                        actualPosition += 1
+            gameLetterAddedFromAlphabet[actualPosition] = 1
+
+
+if amountOfAttempts == 0 and not wordGuessed:
+    print(f"You lost :( There's no more attempts. The word was '{wordToGuess}")
 

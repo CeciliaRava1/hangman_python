@@ -40,8 +40,8 @@ The code consists of the following main parts:
     word_letters = []
     alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
     position_letter = [0] * len(alphabet)
-    list = ['cat', 'dog', 'rabbit', 'wolf', 'horse', 'cow', 'elephant', 'bird', 'fox']
-    word = secrets.choice(list)
+    optionWordsToGuess = ['cat', 'dog', 'rabbit', 'wolf', 'horse', 'cow', 'elephant', 'bird', 'fox']
+    word = secrets.choice(optionWordsToGuess)
     word_game = ''
     word_length = len(word)
     position_word = []
