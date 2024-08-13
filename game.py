@@ -69,32 +69,39 @@ while amountOfAttempts >= 0:
         break
     else:
         letterOrWord = input(f'Write a letter or a word for {wordToGuessGame}. Attemps: {amountOfAttempts}')
-        amountOfAttempts -= 1
-        if len(letterOrWord) > 1:
-            if letterOrWord == wordToGuess:
-                print(f"You won the game! The word was '{wordToGuess}'")
-                wordGuessed = True
-                break
+        letterOrWord.lower()
+        letterOrWordArray = list(letterOrWord)
+
+        for letter in letterOrWordArray:
+            if letter in alphabet:
+                #Add error when the player don't input a lowercase letter of the alphabet (uppercase, symbols)
+                amountOfAttempts -= 1
+                if len(letterOrWord) > 1:
+                    if letterOrWord == wordToGuess:
+                        print(f"You won the game! The word was '{wordToGuess}'")
+                        wordGuessed = True
+                        break
+                    else:
+                        print("You don't guess the word")
+
+                else:
+            #Replace 0 to 1 in the letter
+                    amountOfLettersAdded = 0
+                    actualPosition = 0
+                    letterPositionInAlphabetReached = False
+
+                    while amountOfLettersAdded != len(wordToGuess):
+                        amountOfLettersAdded += 1
+                        while not letterPositionInAlphabetReached:
+                            for letter in alphabet:
+                                if letterOrWord == letter:
+                                    letterPositionInAlphabetReached = True
+                                    break
+                                actualPosition += 1
+                    gameLetterAddedFromAlphabet[actualPosition] = 1
             else:
-                print("You don't guess the word")
+                print("You must type characters of the alphabet. Try again")
 
-        else:
-    #Replace 0 to 1 in the letter
-            amountOfLettersAdded = 0
-            actualPosition = 0
-            letterPositionInAlphabetReached = False
-
-            while amountOfLettersAdded != len(wordToGuess):
-                amountOfLettersAdded += 1
-                while not letterPositionInAlphabetReached:
-                    for letter in alphabet:
-                        if letterOrWord == letter:
-                            letterPositionInAlphabetReached = True
-                            break
-                        actualPosition += 1
-            gameLetterAddedFromAlphabet[actualPosition] = 1
-
-
-if amountOfAttempts == 0 and not wordGuessed:
-    print(f"You lost :( There's no more attempts. The word was '{wordToGuess}")
+        if amountOfAttempts == 0 and not wordGuessed:
+            print(f"You lost :( There's no more attempts. The word was '{wordToGuess}")
 
