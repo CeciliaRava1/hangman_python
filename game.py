@@ -57,6 +57,7 @@ def hideLettersWordToGuess():
 
     
 def getPlayerInput(letterPositionInAlphabet, gameLetterAddedFromAlphabet):
+    wordsInputed = []
     amountOfAttempts = 10
     wordGuessed = False
 
@@ -75,24 +76,29 @@ def getPlayerInput(letterPositionInAlphabet, gameLetterAddedFromAlphabet):
             wordGuessed = True
             break
         else:
-            letterOrWord = input(f'Write a letter or a word for {wordToGuessGame}. Attemps: {amountOfAttempts}')
-            letterOrWord.lower()
+            letterOrWord = input(f'Write a letter or a word for {wordToGuessGame}. Attemps: {amountOfAttempts}').lower()
             letterOrWordArray = list(letterOrWord)
 
-            for letter in letterOrWordArray:
-                if letter in alphabet:
-                    #Add error when the player don't input a lowercase letter of the alphabet (uppercase, symbols)
-                    amountOfAttempts -= 1
-                    if len(letterOrWord) > 1:
-                        if letterOrWord == wordToGuess:
-                            print(f"You won the game! The word was '{wordToGuess}'")
-                            wordGuessed = True
-                            break
-                        else:
-                            print("You don't guess the word")
-
-                    else:
-                #Replace 0 to 1 in the letter
+            if len(letterOrWord) > 1:
+                amountOfAttempts -= 1
+                if letterOrWord == wordToGuess:
+                    print(f"You won the game! The word was '{wordToGuess}'")
+                    wordGuessed = True
+                    break
+                elif letterOrWord in wordsInputed:
+                    print("You already has choosen that word. Try again")
+                    amountOfAttempts += 1
+                else:
+                    print("You don't guess the word")
+                    wordsInputed.append(letterOrWord)
+            else:
+                amountOfAttempts -= 1
+                for letter in letterOrWordArray:
+                    if letter in wordToGuessGame:
+                        print("You already has choosen that letter. Try again")
+                        amountOfAttempts += 1
+                    elif letter in alphabet:
+                    #Replace 0 to 1 in the letter
                         amountOfLettersAdded = 0
                         actualPosition = 0
                         letterPositionInAlphabetReached = False
@@ -106,11 +112,11 @@ def getPlayerInput(letterPositionInAlphabet, gameLetterAddedFromAlphabet):
                                         break
                                     actualPosition += 1
                         gameLetterAddedFromAlphabet[actualPosition] = 1
-                else:
-                    print("You must type characters of the alphabet. Try again")
+                    else:
+                        print("You must type characters of the alphabet. Try again")
 
-            if amountOfAttempts == 0 and not wordGuessed:
-                print(f"You lost :( There's no more attempts. The word was '{wordToGuess}")
+                if amountOfAttempts == 0 and not wordGuessed:
+                    print(f"You lost :( There's no more attempts. The word was '{wordToGuess}")
 
 
 wordToGuess, wordToGuessLetters = setWordToGuess(optionWordsToGuess)
