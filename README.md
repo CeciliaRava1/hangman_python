@@ -11,22 +11,6 @@ This is a simple implementation of the classic Hangman game in Python. The playe
 5. If the player guesses the word correctly or reveals all letters before running out of attempts, they win.
 6. If the player runs out of attempts, they lose.
 
-## Prerequisites
-
-- Python 3.x
-
-## How to Run
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/CeciliaRava1/hangman-game.git
-    cd hangman-game
-    ```
-2. Run the game:
-    ```bash
-    python hangman.py
-    ```
-
 ## Acknowledgments
 
 Inspired by the classic Hangman game.
